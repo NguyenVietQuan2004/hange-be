@@ -46,7 +46,7 @@ public class VerificationTokenService {
 		String rawToken = generateToken();
 		String tokenHash = rawToken;
 		VerificationToken token = VerificationToken.builder().tokenHash(tokenHash).user(user).type(type).used(false)
-				.expiresAt(LocalDateTime.now().plusSeconds(15)).build();
+				.expiresAt(LocalDateTime.now().plusSeconds(VERIFICATION_TOKEN_EXPIRATION)).build();
 		verificationTokenRepository.save(token);
 		return rawToken;
 	}

@@ -1,5 +1,6 @@
 package com.hange.booking.auth.entity.role;
 
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,5 +54,5 @@ public class Role {
 	@ManyToMany
 	@JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"), uniqueConstraints = {
 			@UniqueConstraint(columnNames = { "role_id", "permission_id" }) })
-	private Set<Permission> permissions;
+	private List<Permission> permissions;
 }

@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    environment: vps-hange
+    environment: vps-hange-spring
 
     steps:
       # checkout source code
@@ -35,3 +35,28 @@ jobs:
       # build Spring Boot bằng Gradle
       - name: Build with Gradle
         run: ./gradlew clean build -x test
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment: vps-hange
+
+    needs: build
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.0
+
+        with:
+          host: ${{ secrets.HOST_PRODUCTION }}
+          username: ${{ secrets.USERNAME_PRODUCTION }}
+          password: ${{ secrets.PASSWORD_PRODUCTION }}
+          port: ${{ secrets.PORT_PRODUCTION }}
+
+          script: |
+
+            # vào folder backend trên VPS
+            cd ~/.production/hange-be
+
+            # update code
+            git fetch --all
+            git reset --hard origin/main

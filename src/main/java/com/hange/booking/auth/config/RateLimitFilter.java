@@ -26,22 +26,13 @@ public class RateLimitFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		// Lấy địa chỉ IP của client gửi request
 		String clientIp = request.getRemoteAddr();
-
-		// Lấy bucket tương ứng với IP, nếu chưa có thì tạo mới
 		Bucket bucket = buckets.computeIfAbsent(clientIp, k -> createNewBucket());
-
-		// Kiểm tra xem bucket có còn token để xử lý request không
 		if (bucket.tryConsume(1)) {
-			// ✅ Còn token: cho phép request tiếp tục đi qua các filter khác
 			filterChain.doFilter(request, response);
 		} else {
-			// ❌ Hết token: từ chối xử lý request (HTTP 429 - Too Many Requests)
 			response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
 			response.setContentType("application/json; charset=UTF-8");
-
-			// Gửi thông báo lỗi dạng JSON cho client
 			response.getWriter().write("""
 					    {
 					      "status": 429,

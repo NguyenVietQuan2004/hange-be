@@ -2,8 +2,13 @@ package com.hange.booking.auth.service.permission;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.hange.booking.auth.Specification.PermissionSpecification;
+import com.hange.booking.auth.dto.permission.PermissionFilterDTO;
 import com.hange.booking.auth.entity.permission.Permission;
 import com.hange.booking.auth.entity.role.Role;
 import com.hange.booking.auth.exception.AppRuntimeException;
@@ -30,7 +35,6 @@ public class PermissionService {
 	public Permission update(Long id, Permission request) {
 
 		Permission permission = getById(id);
-
 		permission.setName(request.getName());
 		permission.setApiPath(request.getApiPath());
 		permission.setMethod(request.getMethod());
@@ -40,19 +44,20 @@ public class PermissionService {
 	}
 
 	public Permission getById(Long id) {
-
 		return permissionRepository.findById(id)
 				.orElseThrow(() -> new AppRuntimeException(ErrorCode.PERMISSION_NOT_FOUND));
 	}
 
 	public Permission getByName(String name) {
-
 		return permissionRepository.findByName(name)
 				.orElseThrow(() -> new AppRuntimeException(ErrorCode.PERMISSION_NOT_FOUND));
 	}
 
-	public List<Permission> getAll() {
-		return permissionRepository.findAll();
+	public Page<Permission> getAll(PermissionFilterDTO filter, Pageable pageable) {
+
+		Specification<Permission> spec = PermissionSpecification.filter(filter);
+
+		return permissionRepository.findAll(spec, pageable);
 	}
 
 	public List<Permission> getByModule(String module) {

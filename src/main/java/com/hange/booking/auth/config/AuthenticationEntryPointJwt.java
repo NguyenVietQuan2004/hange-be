@@ -18,18 +18,6 @@ public class AuthenticationEntryPointJwt implements org.springframework.security
 	@Autowired
 	private ObjectMapper objectMapper;
 
-//	@Override
-//	public void commence(HttpServletRequest request, HttpServletResponse response,
-//			AuthenticationException authException) throws IOException {
-//
-//		response.setContentType("application/json");
-//		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//
-//		objectMapper.writeValue(response.getWriter(), ApiResponseUtil.error("Token is not valid.",
-//
-//				HttpServletResponse.SC_UNAUTHORIZED));
-//	}
-
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {

@@ -34,10 +34,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 //		>>> requestURI= /api/v1/roles
 
 		String path = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-//		Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-//		System.out.println(pathVariables);
 		String requestURI = request.getRequestURI();
-
 		String httpMethod = request.getMethod();
 		System.out.println(">>> RUN preHandle");
 		System.out.println(">>> path= " + path);
@@ -53,16 +50,12 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
 				if (role != null) {
 					List<Permission> permissions = role.getPermissions();
-//					boolean isAllow = permissions.stream().anyMatch(
-//							item -> item.getApiPath().equals(path) && item.getMethod().equalsIgnoreCase(httpMethod));
-
 					boolean isAllow = permissions.stream().anyMatch(item -> {
 
 						boolean pathMatch = item.getApiPath().equals(path);
 						boolean methodMatch = item.getMethod().equalsIgnoreCase(httpMethod);
 						return pathMatch && methodMatch;
 					});
-					System.out.println(isAllow);
 					if (!isAllow) {
 						System.out.println("🚫 Access denied for: " + email + " → " + httpMethod + " " + path);
 						response.setStatus(HttpServletResponse.SC_FORBIDDEN);

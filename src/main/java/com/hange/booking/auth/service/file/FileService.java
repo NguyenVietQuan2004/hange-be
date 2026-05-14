@@ -66,13 +66,10 @@ public class FileService {
 					Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
 				}
 
-				// 👉 RETURN FULL URL (QUAN TRỌNG)
 				return publicBaseUrl + "/" + folder + "/" + finalName;
 			}
 
-			// AWS S3 (placeholder)
 			if ("s3".equalsIgnoreCase(storageMode)) {
-				// TODO: upload S3
 				return "https://s3-url/" + folder + "/" + finalName;
 			}
 			if ("cloudinary".equalsIgnoreCase(storageMode)) {
@@ -80,7 +77,6 @@ public class FileService {
 				Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(),
 						ObjectUtils.asMap("folder", folder, "resource_type", "auto"));
 
-				// URL trả về
 				return uploadResult.get("secure_url").toString();
 			}
 			throw new AppRuntimeException(ErrorCode.FILE_UPLOAD_FAILED);

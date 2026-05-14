@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,13 @@ import com.hange.booking.auth.service.file.FileService;
 import com.hange.booking.auth.utils.FormatResponse.ApiResponseFormat;
 import com.hange.booking.auth.utils.FormatResponse.ApiResponseUtil;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/files")
+@RequiredArgsConstructor
 public class FileController {
-	@Autowired
-	private FileService fileService;
+	private final FileService fileService;
 
 	@PostMapping
 	public ResponseEntity<ApiResponseFormat> uploadFile(@RequestParam("file") MultipartFile file,
@@ -41,7 +42,7 @@ public class FileController {
 		return ResponseEntity.ok().body(ApiResponseUtil.success(response, HttpStatus.OK.value()));
 	}
 
-	@GetMapping("")
+	@GetMapping
 	public ResponseEntity<ApiResponseFormat> download(
 			@RequestParam(name = "filename", required = false) String fileName,
 			@RequestParam(name = "folder", required = false) String folder) {

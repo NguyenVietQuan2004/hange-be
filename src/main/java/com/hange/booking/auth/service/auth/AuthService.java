@@ -56,15 +56,12 @@ public class AuthService {
 
 		User user = userService.getUserByEmail(email);
 
-		// ❌ nếu đã verify rồi thì không resend
 		if (Boolean.TRUE.equals(user.getEmailVerified())) {
 			throw new AppRuntimeException(ErrorCode.EMAIL_ALREADY_VERIFIED);
 		}
 
-		// tạo token mới
 		String rawToken = verificationTokenService.createEmailVerifyToken(user);
 
-		// gửi email lại
 		emailService.sendVerifyEmail(user.getEmail(), rawToken);
 	}
 
@@ -90,7 +87,6 @@ public class AuthService {
 
 		User user = token.getUser();
 
-		// update password
 		userService.updatePassword(user, request.getNewPassword());
 		verificationTokenService.markAsUsed(token);
 		tokenService.handleSessionAfterPasswordChange(user, PasswordChangeOption.REVOKE_ALL, null);

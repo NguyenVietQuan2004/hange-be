@@ -31,36 +31,29 @@ public class RoleController {
 
 	@PostMapping
 	public ResponseEntity<ApiResponseFormat> create(@Valid @RequestBody RoleCreateRequest request) {
-
 		return ResponseEntity.ok(ApiResponseUtil.success(roleService.create(request), HttpStatus.OK.value()));
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponseFormat> updateRole(@PathVariable("id") Long id,
 			@Valid @RequestBody RoleCreateRequest request) {
-
 		return ResponseEntity.ok(ApiResponseUtil.success(roleService.updateRole(id, request), HttpStatus.OK.value()));
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponseFormat> getById(@PathVariable("id") Long id) {
-
 		return ResponseEntity.ok(ApiResponseUtil.success(roleService.getById(id), HttpStatus.OK.value()));
 	}
 
 	@GetMapping
 	public ResponseEntity<ApiResponseFormat> getAll() {
-
 		List<Role> roles = roleService.getAll();
-
 		return ResponseEntity.ok(ApiResponseUtil.success(roles, HttpStatus.OK.value()));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponseFormat> delete(@PathVariable("id") Long id) {
-
 		roleService.delete(id);
-
 		return ResponseEntity.ok(ApiResponseUtil.success("Delete role success", HttpStatus.OK.value()));
 	}
 
